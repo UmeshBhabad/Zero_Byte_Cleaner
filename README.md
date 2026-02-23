@@ -48,7 +48,7 @@ zero-byte-cleaner/
 │
 ├── ZeroByteCleaner.py      # Main automation script
 ├── README.md               # Project documentation
-└── LogReport_*.txt         # Generated log reports
+└── LogReport_*.log         # Generated log reports
 ```
 
 ---
@@ -130,7 +130,7 @@ export EMAIL_RECEIVER=receiver_email@gmail.com
 Each execution generates a report file:
 
 ```
-LogReport_YYYY_MM_DD_HH_MM_SS.txt
+LogReport_YYYY_MM_DD_HH_MM_SS.log
 ```
 
 Report includes:
