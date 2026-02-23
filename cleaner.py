@@ -69,7 +69,7 @@ class ZeroByteCleaner:
         timestamp = timestamp.replace(" ", "_")
         timestamp = timestamp.replace(":", "_")
 
-        self.FileName = ("LogReport_%s.txt" %(timestamp))
+        self.FileName = ("LogReport_%s.log" %(timestamp))
 
         logobj = open(self.FileName, "w")
 
