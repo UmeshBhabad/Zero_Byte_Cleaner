@@ -1,22 +1,17 @@
 # 🧹 Zero-Byte Cleaner — Python Automation Project
 
-A lightweight **Python automation tool** that scans directories and automatically removes empty (zero-byte) files.
-This project demonstrates filesystem automation, scheduling, logging, and **email notification alerts** using Python.
+**Zero-Byte Cleaner** is a Python automation script that scans directories, detects empty (zero-byte) files, deletes them automatically, generates a detailed log report, and sends an email notification with the execution summary.
+
+This project demonstrates practical automation concepts such as filesystem operations, scheduling, logging, and SMTP email integration.
 
 ---
 
 ## 📌 Project Overview
 
-**Zero-Byte Cleaner** is designed to maintain server hygiene by detecting and deleting unused empty files.
-It runs on a scheduled interval, generates log reports, and sends email notifications after execution.
+Large directories and servers often accumulate unused empty files that waste storage and create clutter.
+Zero-Byte Cleaner automates the process of identifying and removing such files while maintaining execution logs and sending automated reports.
 
-This automation is useful for:
-
-* Server maintenance
-* Cleaning temporary directories
-* Log and build artifact cleanup
-* Automated filesystem monitoring
-* Learning Python-based DevOps automation
+The script runs at scheduled intervals and can be executed from the command line.
 
 ---
 
@@ -25,30 +20,10 @@ This automation is useful for:
 * ✅ Recursive directory scanning using `os.walk()`
 * ✅ Automatic deletion of zero-byte files
 * ✅ Scheduled execution using `schedule`
-* ✅ Timestamp-based log file generation
-* ✅ **Email notification after scan completion**
-* ✅ Command-line execution
-* ✅ Lightweight and customizable automation
-
----
-
-## 📧 Email Notification Feature
-
-The script sends an automated email summary containing:
-
-* Total files scanned
-* Empty files detected
-* Files deleted
-* Execution timestamp
-* Log file details
-
-This helps monitor automation remotely without manually checking logs.
-
-Typical use cases:
-
-* Server administrators receiving cleanup reports
-* Automated maintenance alerts
-* Remote monitoring of filesystem activity
+* ✅ Detailed log report generation
+* ✅ Email notification with report attachment
+* ✅ Error tracking during deletion
+* ✅ Command-line based execution
 
 ---
 
@@ -61,8 +36,8 @@ Typical use cases:
   * `sys`
   * `time`
   * `schedule`
-  * `smtplib` *(for email notifications)*
-  * `email.mime` *(for formatted email content)*
+  * `smtplib`
+  * `email.message`
 
 ---
 
@@ -71,9 +46,9 @@ Typical use cases:
 ```
 zero-byte-cleaner/
 │
-├── cleaner.py        # Main automation script
-├── README.md         # Project documentation
-└── logs/             # Generated log files (optional)
+├── ZeroByteCleaner.py      # Main automation script
+├── README.md               # Project documentation
+└── LogReport_*.txt         # Generated log reports
 ```
 
 ---
@@ -87,7 +62,7 @@ git clone https://github.com/your-username/zero-byte-cleaner.git
 cd zero-byte-cleaner
 ```
 
-### 2️⃣ Install Dependencies
+### 2️⃣ Install Required Dependency
 
 ```
 pip install schedule
@@ -97,102 +72,100 @@ pip install schedule
 
 ## ▶️ Usage
 
-Run the script by providing the target directory as an argument:
+Run the script using:
 
 ```
-python cleaner.py <directory_name>
+python ZeroByteCleaner.py <DirectoryName> <TimeInterval>
 ```
 
-Example:
+### Example:
 
 ```
-python cleaner.py Marvellous
+python ZeroByteCleaner.py Marvellous 1
 ```
 
-The script will:
+**Arguments:**
 
-1. Scan the given directory.
-2. Detect empty files.
-3. Delete zero-byte files automatically.
-4. Generate a log file.
-5. Send an email notification with execution details.
+* `DirectoryName` → Target directory to scan
+* `TimeInterval` → Execution interval in minutes
 
 ---
 
-## ⏱️ Scheduling Behavior
+## ⏱️ How It Works
 
-Currently, the automation runs:
-
-```
-Every 1 minute
-```
-
-You can modify this inside the script:
-
-```
-schedule.every(1).minute.do(DirectoryScanner)
-```
+1. The script scans the provided directory recursively.
+2. Detects files with size `0 bytes`.
+3. Deletes empty files safely.
+4. Generates a timestamped log report.
+5. Sends an email notification with the log file attached.
 
 ---
 
-## 📝 Log Output
+## 📧 Email Notification Setup
 
-A log file is generated for every execution containing:
+Before running the script, configure your email credentials using environment variables.
+
+### Windows (Command Prompt)
+
+```
+set EMAIL_USER=your_email@gmail.com
+set EMAIL_PASS=your_app_password
+set EMAIL_RECEIVER=receiver_email@gmail.com
+```
+
+### Linux / macOS
+
+```
+export EMAIL_USER=your_email@gmail.com
+export EMAIL_PASS=your_app_password
+export EMAIL_RECEIVER=receiver_email@gmail.com
+```
+
+> ⚠️ Never commit real credentials to GitHub.
+
+---
+
+## 📝 Log Report
+
+Each execution generates a report file:
+
+```
+LogReport_YYYY_MM_DD_HH_MM_SS.txt
+```
+
+Report includes:
 
 * Total files scanned
-* Number of empty files found
+* Empty files found
+* Files deleted
+* Errors encountered
 * Execution timestamp
 
-Example log name:
+---
+
+## 🧪 Example Output
 
 ```
-Marvellous_Mon_Feb_19_12_30_00_2026.log
+Scan Complete
+Mail sent successfully with attachment
+Directory Scanned at : Mon Feb 23 14:10:02 2026
 ```
 
 ---
 
-## 🔐 Email Configuration (Setup Required)
+## 🔮 Future Enhancements
 
-Before running the script, configure:
-
-* Sender email address
-* Receiver email address
-* SMTP server settings
-* App password or authentication credentials
-
-Example SMTP providers:
-
-* Gmail SMTP
-* Outlook SMTP
-* Custom Mail Server
-
-> ⚠️ Do not commit real passwords or credentials to GitHub.
-> Use environment variables or configuration files instead.
-
----
-
-## 🔮 Future Improvements (Planned Upgrades)
-
-* Dry-Run Mode (Preview before deletion)
-* Backup/Recycle Folder Support
-* Advanced Logging using `logging` module
-* CLI arguments using `argparse`
-* Real-time monitoring with `watchdog`
-* Multi-directory scanning
-* Docker container support
-
----
-
-## 🤝 Contributing
-
-Contributions, ideas, and improvements are welcome.
-Feel free to fork the repository and submit a pull request.
+* Dry-Run Mode (preview before deletion)
+* Backup folder instead of permanent deletion
+* Advanced logging module integration
+* Config file support (JSON/YAML)
+* Real-time monitoring using watchdog
 
 ---
 
 ## 👨‍💻 Author
 
-**Umesh Bhabad**
+**Umesh Shivaji Bhabad**
 📫 [umeshbhabad9@gmail.com](mailto:umeshbhabad9@gmail.com)
 
 ---
