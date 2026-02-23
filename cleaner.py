@@ -7,8 +7,16 @@ import schedule
 import smtplib
 from email.message import EmailMessage
 
+###############################################################################################################
+# Class : ZeroByteCleaner
+###############################################################################################################
 class ZeroByteCleaner:
+    ###########################################################################################################
+    # Constructor
+    ###########################################################################################################
+
     def __init__(self, dirName):
+        # Initialize members
         self.DirName = dirName
         self.TotalFileCount = 0
         self.EmptyFiles = 0
@@ -16,6 +24,16 @@ class ZeroByteCleaner:
         self.DeleteErrors = 0
         self.Border = "-" * 80
         self.FileName = ""
+    
+
+    ###########################################################################################################
+    #
+    # Function      :   DirectoryScanner
+    # Description   :   Used to scan the directory for empty files and delete those files
+    # Author        :   Umesh Shivaji Bhabad
+    # Date          :   23/02/2026
+    # 
+    ###########################################################################################################
     
     def DirectoryScanner(self):
         self.TotalFileCount = 0
@@ -63,6 +81,15 @@ class ZeroByteCleaner:
         print("Scan Complete")
         print(f"Scanned : {self.TotalFileCount} | Deleted : {self.DeletedFiles} | Errors : {self.DeleteErrors}")      
 
+    ###########################################################################################################
+    #
+    # Function      :   LogFileWriter
+    # Description   :   Used to create a Report log file
+    # Author        :   Umesh Shivaji Bhabad
+    # Date          :   23/02/2026
+    # 
+    ###########################################################################################################
+
     def LogFileWriter(self):
 
         timestamp = time.ctime()
@@ -94,6 +121,16 @@ class ZeroByteCleaner:
         logobj.write(self.Border + "\n")
         logobj.write("----------------- Thank you for using this automation script -------------------" + "\n")
         logobj.write(self.Border + "\n")
+
+    ###########################################################################################################
+    #
+    # Function      :   send_mail
+    # Description   :   Used to send the email with the attachment
+    # Input         :   sender email, app password, receiver email, subject and body, attachment
+    # Author        :   Umesh Shivaji Bhabad
+    # Date          :   23/02/2026
+    # 
+    ###########################################################################################################
 
     def send_mail(self, sender, password, receiver, subject, body, report):
     
@@ -135,8 +172,22 @@ class ZeroByteCleaner:
         # Step 8 : Close the connection manually
         smtp.quit()
 
+    ###########################################################################################################
+    # Destructor
+    ###########################################################################################################
+
     def __del__(self):
         print("Directory Scanned at : ", time.ctime())
+
+###############################################################################################################
+#
+# Function      :   CleaningProcess
+# Description   :   Used to call all the functions step by step
+# Input         :   Directory Name
+# Author        :   Umesh Shivaji Bhabad
+# Date          :   23/02/2026
+# 
+###############################################################################################################
 
 def CleaningProcess(Dir):
 
@@ -176,7 +227,10 @@ def CleaningProcess(Dir):
 
     del obj
 
+###############################################################################################################
 # Main method
+###############################################################################################################
+
 def main():
     Border = "-" * 80
 
@@ -226,6 +280,8 @@ def main():
     print("----------------- Thank you for using this automation script -------------------")
     print(Border)
 
+###############################################################################################################
 # Start of program
+###############################################################################################################
 if __name__ == "__main__":
     main()
